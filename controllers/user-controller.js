@@ -127,10 +127,10 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
              return data.updateUserPassword(user, oldPassword, newPassword);
           })
           .then(() => {
-              res.status(201).json({message:"Successfully changed your password"});
+              res.status(201).json({isSuccesful:"true"});
           })
           .catch((err) => {
-              res.status(400).json(err);
+              res.status(400).json({isSuccesful:"false"});
           });
   }
 
