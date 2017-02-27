@@ -12,12 +12,12 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
     data.registerUser(user)
       .then(() => {
         res.status(201);
-        return res.json("Successfully registered user.");
+        return res.json({isSuccesful:"true"});
       })
       .catch((err) => {
         res.status(400);
         console.log(err.message)
-        return res.json(err.message);
+        return res.json({isSuccesful:"false"});
       });
   }
 
@@ -73,20 +73,22 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
 
 
   function uploadProfilePicture(req, res) {
-      const email = req.body.email;
+      //const email = req.body.email;
       const imageData = req.body.avatar;
+      const username = req.user.email;
     
-              data.getUserByName(email)
+    
+              data.getUserByName(req.user.email)
                   .then((user) => {
                       return data.updateUserProfilePicture(user, imageData);
                   })
                   .then(() => {
                       res.status(201);
-                      return res.json('Profile picture was successfully saved');
+                      return res.json({isSuccesful:"true"});
                   })
                   .catch((err) => {
                       res.status(400);
-                      return res.json('Problem occured with saving the picture. Please try again later.');
+                      return res.json({isSuccesful:"false"});
                   });
           
   
@@ -120,8 +122,7 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
   function updatePassword(req, res) {
       let oldPassword = req.body.oldPassword;
       let newPassword = req.body.newPassword;
-      console.log(oldPassword);
-      console.log(req.user);
+
       data.getUserByName(req.user.email)
           .then((user) => {
              return data.updateUserPassword(user, oldPassword, newPassword);
@@ -175,8 +176,8 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
   }
 
   function sendFriendRequest(req, res){
-    let requester = req.body[0].email;
-    let receiver = req.body[1].email;
+    let requester = req.user.email;
+    let receiver = req.body.email;
     
     console.log(requester);
     console.log(receiver);
@@ -185,13 +186,13 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
     .then(data => {
       if(!data){
         console.log('This user already has request from you!');
-        res.status(401).send({ message: "This user already has request from you!" });
+        res.status(401).send({isSuccesful:"false"});
       }else{
-        res.status(201).send({succes:true});
+        res.status(201).send({isSuccesful:"true"});
       }
     }).catch(err => {
       console.log(err.message);
-      res.status(401).send(err.message);
+      res.status(401).send({isSuccesful:"false"});
     })
   }
 
@@ -205,15 +206,15 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
     ])
     .then(([first,second,dbUser])=> {
       if(!dbUser){
-          res.status(401).send({});
+          res.status(401).send({isSuccesful:"false"});
           return;
       }
 
-           res.status(201).send(dbUser);
+           res.status(201).send({isSuccesful:"true"});
 
     })
     .catch(err => {
-      res.status(401).send(err.message)
+      res.status(401).send({isSuccesful:"false"})
     })
   }
 
@@ -224,39 +225,43 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
     data.removeRequest(firstUser.username,secondUser.username)
     .then(user => {
       if(!user){
-        res.status(401).send({message:"There is problem with your request"})
+        res.status(401).send({isSuccesful:"false"})
         return;
       }
 
-      res.status(201).send(user);
+      res.status(201).send({isSuccesful:"true"});
 
     }).catch(err =>{
-      res.status(401).send(err.message);
+      res.status(401).send({isSuccesful:"false"});
     })
   }
 
   function readAllFriendRequests(req,res){
-    let username = req.body.username;
+    let username = req.user.username;
+    console.log(req.user);
 
     data.readAllFriendRequest(username)
     .then(user =>{
       if(!user){
-        res.status(401).send({message:"There is problem with your request"});
+        res.status(401).send({isSuccesful:"false"});
         return;
       }
 
-       res.status(201).send(user);
+       res.status(201).send({isSuccesful:"true"});
     })
     .catch(err => {
-      res.status(401).send(err.message);
+      res.status(401).send({isSuccesful:"false"});
     });
   }
 
-  function searchUserByEmail(req,res){
-    let email = req.params.email;
-    data.searchUsersByEmail(email)
+  function searchUsersByUsername(req,res){
+    let pattern = req.params.username;
+    let username = req.user.username;
+    
+    data.searchUsersByUsername(username,pattern)
     .then(users => {
       if(!users){
+        console.log("no users")
         res.status(401).send()
         return;
       }
@@ -282,6 +287,6 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
     confirmFriendRequest,
     denyFriendRequest,
     readAllFriendRequests,
-    searchUserByEmail
+    searchUsersByUsername
   };
 };

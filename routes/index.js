@@ -17,15 +17,11 @@ module.exports = function ({ app, controllers }) {
              .post('/profile/add-friend',controllers.user.confirmFriendRequest)
              .put('/profile/deny-request',controllers.user.denyFriendRequest)
              .put('/profile/requests',controllers.user.readAllFriendRequests)
-             .get('/users/search/:email',controllers.user.searchUserByEmail)
+             .get('/users/search/:username',controllers.user.searchUsersByUsername)
 
 
 
     app.use('/api', apiRouter);
 
-    app.get('/', function (req, res) {
-        res
-            .status(200)
-            .sendFile(path.join(__dirname, '/../../dist/index.html'));
-    });
+  
 };

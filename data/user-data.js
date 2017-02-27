@@ -224,17 +224,43 @@ function removeRequest(username, requestUsername) {
       });
   }
 
-  function searchUsersByEmail(emailPattern){
-      let pattern = '/^'+emailPattern+'/i';
-      console.log(pattern);
+  function searchUsersByUsername(username,usernamePattern){
+     
       return new Promise((resolve,reject) => {
-          User.find({'email': {$regex: emailPattern,$options:"$i"}},'username email avatar')
+          User.find({'username': {$regex: usernamePattern,$options:"$i"}},'username email avatar')
           .then(users => {
               if(!users){
                   return reject(new Error("There is no such User"));
               }
+               User.find({'username':username},'friends').then(friends =>{
+                   
+                    let usersArray = [];
+                   
+                   
+                        
+                   
+                
+                   for(let user of users){
+                       let newUser = {
+                            username:user.username,
+                            email:user.email,
+                            avatar: user.avatar,
+                            isFriend: false
+                        }
+                       for(let friend of friends){
+                       if(user.username == friend.username){
+                           newUser["isFriend"] = true;
+                       }else{
+                           newUser["isFriend"] = false;
+                       }
+                        usersArray.push(newUser);
+                    }
+                   }
+                 
+                 console.log(usersArray);
+                 return resolve(usersArray);
+               })
                
-               return resolve(users);
           });
       });
   }
@@ -252,6 +278,6 @@ function removeRequest(username, requestUsername) {
     addFriend,
     sendFreindRequest,
     readAllFriendRequest,
-    searchUsersByEmail
+    searchUsersByUsername
   };
 };
