@@ -18,6 +18,7 @@ module.exports = function ({ app, controllers }) {
              .put('/profile/deny-request',controllers.user.denyFriendRequest)
              .put('/profile/requests',controllers.user.readAllFriendRequests)
              .get('/users/search/:username',controllers.user.searchUsersByUsername)
+             .get("/profile/get-requests",controllers.user.getRequests)
 
 
 

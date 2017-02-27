@@ -489,7 +489,7 @@ const userSchema = mongooseSchema({
     email: { type: String, required: true, unique: true },
     role: { type: String, enum: ["User", "Admin"], default: "User" },
     avatar: { type: String, default: defaultAvatar },
-    request:{type:[requestSchema],default:[]},
+    request:[requestSchema],
     friends:{type:[friendsSchema],default:[]},
     newRequest:{type:Number, default: 0}
     

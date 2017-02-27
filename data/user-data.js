@@ -265,6 +265,27 @@ function removeRequest(username, requestUsername) {
       });
   }
 
+  function getRequests(username){
+     return new Promise((resolve,reject) => {
+          User.find({"username":username},"request")
+            .then(requests => {
+            
+            let reqArray = [];
+            for(let req of requests){
+                console.log(req)
+                let newReq = {
+                    username:req.request.username,
+                    email:req.request.email,
+                    avatar:req.request.avatar
+                }
+                reqArray.push(newReq);
+            }
+            console.log(reqArray)
+          return resolve(reqArray);
+        })
+     })
+  }
+
   return {
     getUserByName,
     getUserByEmail,
@@ -278,6 +299,7 @@ function removeRequest(username, requestUsername) {
     addFriend,
     sendFreindRequest,
     readAllFriendRequest,
-    searchUsersByUsername
+    searchUsersByUsername,
+    getRequests
   };
 };

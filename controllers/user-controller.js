@@ -198,9 +198,9 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
 
   function confirmFriendRequest(req,res){
     let firstUser = req.body.firstUser;
-    let secondUser = req.body.secondUser;
+    let secondUser = req.body
 
-    Promise.all([data.addFriend(firstUser.username,secondUser),
+    Promise.all([data.addFriend(req.user.username,secondUser),
     data.addFriend(secondUser.username,firstUser),
     data.removeRequest(firstUser.username,secondUser.username)
     ])
@@ -273,7 +273,14 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
       res.status(401).send(err.message);
     })
   }
+  function getRequests(req,res){
+    let username = req.user.username;
 
+    data.getRequests(username)
+    .then(requests =>{
+      res.status(200).send(requests);
+    })
+  }
   return {
     name: "user",
     registerUser,
@@ -287,6 +294,7 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
     confirmFriendRequest,
     denyFriendRequest,
     readAllFriendRequests,
-    searchUsersByUsername
+    searchUsersByUsername,
+    getRequests
   };
 };
