@@ -8,7 +8,7 @@ module.exports = function (models) {
       const salt = encryption.generateSalt();
       const hashedPassword = encryption.generateHashedPassword(salt, body.password);
 
-      console.log(body.username);
+      //console.log(body.username);
       User.create({
         username: body.username,
         hashedPassword,
@@ -50,17 +50,12 @@ module.exports = function (models) {
 
   function sendFreindRequest(requester,receiver){
     return new Promise((resolve, reject) => {
-
-      User.find({"email": requester},'username email avatar',(err,user) =>{
-          if (err) {
-                        console.log("pesho")
-
-                        return reject(err);
-                    }
+    // requester._id = requester.requestUser + "_" + username;
+     
             User.findOneAndUpdate(
                 { "email": receiver,
-                    "request.username": { $ne: user.username }, "friends.username":{$ne: user.username}}, 
-                { $addToSet: { "request": user }, $inc: {"newRequest":1} },
+                    "request.username": { $ne: requester.username }, "friends.username":{$ne: requester.username}}, 
+                { $addToSet: { "request": requester }, $inc: {"newRequest":1} },
                 { new: true },
                 (err2, dbReq) => {
                     if (err2) {
@@ -69,7 +64,6 @@ module.exports = function (models) {
                     }
                     return resolve(dbReq);
                 });
-      })
       
     });
   }
@@ -111,7 +105,7 @@ function removeRequest(username, requestUsername) {
         return new Promise((resolve, reject) => {
             User.findOneAndUpdate(
                 { "username": username }, 
-                { $pull: { "requests": { "username": requestUsername } } }, 
+                { $pull: { "request": { "username": requestUsername } } }, 
                 { new: true },
                 (err, user) => {
                     if (err) {
@@ -235,10 +229,7 @@ function removeRequest(username, requestUsername) {
                User.find({'username':username},'friends').then(friends =>{
                    
                     let usersArray = [];
-                   
-                   
-                        
-                   
+
                 
                    for(let user of users){
                        let newUser = {
@@ -257,7 +248,7 @@ function removeRequest(username, requestUsername) {
                     }
                    }
                  
-                 console.log(usersArray);
+                 //console.log(usersArray);
                  return resolve(usersArray);
                })
                
@@ -270,18 +261,14 @@ function removeRequest(username, requestUsername) {
           User.find({"username":username},"request")
             .then(requests => {
             
-            let reqArray = [];
+                let reqArray = [];
             for(let req of requests){
-                console.log(req)
-                let newReq = {
-                    username:req.request.username,
-                    email:req.request.email,
-                    avatar:req.request.avatar
-                }
-                reqArray.push(newReq);
+                //console.log(req.request);
+                reqArray = req.request;
+                break;
             }
-            console.log(reqArray)
-          return resolve(reqArray);
+         
+          return resolve(reqArray)
         })
      })
   }
