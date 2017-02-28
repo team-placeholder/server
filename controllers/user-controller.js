@@ -201,10 +201,14 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
   }
 
   function confirmFriendRequest(req,res){
-    let firstUser = req.body.firstUser;
+    let firstUser = {
+      username:req.user.username,
+      email:req.user.email,
+      avatar:req.user.avatar
+    };
     let secondUser = req.body
 
-    Promise.all([data.addFriend(req.user.username,secondUser),
+    Promise.all([data.addFriend(firstUser.username,secondUser),
     data.addFriend(secondUser.username,firstUser),
     data.removeRequest(firstUser.username,secondUser.username)
     ])
@@ -223,8 +227,8 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
   }
 
   function denyFriendRequest(req,res){
-    let firstUser = req.body.firstUser;
-    let secondUser = req.body.secondUser;
+    let firstUser = req.user;
+    let secondUser = req.body;
 
     data.removeRequest(firstUser.username,secondUser.username)
     .then(user => {

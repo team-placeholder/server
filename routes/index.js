@@ -19,6 +19,7 @@ module.exports = function ({ app, controllers }) {
              .put('/profile/requests',controllers.user.readAllFriendRequests)
              .get('/users/search/:username',controllers.user.searchUsersByUsername)
              .get("/profile/get-requests",controllers.user.getRequests)
+             
 
 
 
