@@ -289,6 +289,14 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
       res.status(200).send(requests);
     })
   }
+
+  function getFriends(req,res){
+    let username = req.user.username;
+    data.getFriends(username)
+    .then(friends =>{
+      res.status(200).send(friends);
+    })
+  }
   return {
     name: "user",
     registerUser,
@@ -303,6 +311,7 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
     denyFriendRequest,
     readAllFriendRequests,
     searchUsersByUsername,
-    getRequests
+    getRequests,
+    getFriends
   };
 };

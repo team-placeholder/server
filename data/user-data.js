@@ -226,26 +226,31 @@ function removeRequest(username, requestUsername) {
               if(!users){
                   return reject(new Error("There is no such User"));
               }
-               User.find({'username':username},'friends').then(friends =>{
+               User.findOne({'username':username}).then(user =>{
                    
                     let usersArray = [];
 
                 
-                   for(let user of users){
+                console.log(user.friends);
+                   for(let user1 of users){
+                       if(user.username == user1.username){
+                        
+                       }else{
                        let newUser = {
-                            username:user.username,
-                            email:user.email,
-                            avatar: user.avatar,
+                            username:user1.username,
+                            email:user1.email,
+                            avatar: user1.avatar,
                             isFriend: false
                         }
-                       for(let friend of friends){
-                       if(user.username == friend.username){
+                       for(let friend of user.friends){
+                        
+                       if(user1.username == friend.username){
                            newUser["isFriend"] = true;
-                       }else{
-                           newUser["isFriend"] = false;
                        }
-                        usersArray.push(newUser);
+                        
                     }
+                    usersArray.push(newUser);
+                   }
                    }
                  
                  //console.log(usersArray);
@@ -273,6 +278,30 @@ function removeRequest(username, requestUsername) {
      })
   }
 
+  function getFriends(username){
+      return new Promise((resolve,reject) => {
+          User.findOne({"username":username})
+          .then(user => {
+            if(!user){
+                return reject(new Error("There is no such User"));
+            }
+            let friendsArray = [];
+            for(let friend of user.friends){
+                let fr = {
+                    username:friend.username,
+                    email:friend.email,
+                    avatar:friend.avatar,
+                    isFriend:true
+                }
+               friendsArray.push(fr);
+
+            }
+            console.log(friendsArray);
+            return resolve(friendsArray); 
+          })
+      })
+  }
+
   return {
     getUserByName,
     getUserByEmail,
@@ -287,6 +316,7 @@ function removeRequest(username, requestUsername) {
     sendFreindRequest,
     readAllFriendRequest,
     searchUsersByUsername,
-    getRequests
+    getRequests,
+    getFriends
   };
 };

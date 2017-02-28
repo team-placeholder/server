@@ -19,7 +19,8 @@ module.exports = function({ app, controllers }) {
         .put('/profile/requests', controllers.user.readAllFriendRequests)
         .post('/profile/events', controllers.events.getDailyEvents)
         .get('/users/search/:username', controllers.user.searchUsersByUsername)
-        .get("/profile/get-requests", controllers.user.getRequests);
+        .get("/profile/get-requests", controllers.user.getRequests)
+        .get("/profile/friends",controllers.user.getFriends)
 
 
 
