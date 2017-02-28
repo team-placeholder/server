@@ -7,7 +7,7 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
 
   function registerUser(req, res) {
     const user = req.body;
-    console.log(user);
+    //console.log(user);
 
     data.registerUser(user)
       .then(() => {
@@ -26,7 +26,7 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
     let email = req.body.email;
     let password = req.body.password;
 
-    console.log(email)
+    //console.log(email)
 
     const webTokenObject = {
       email: req.body.email,
@@ -176,11 +176,15 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
   }
 
   function sendFriendRequest(req, res){
-    let requester = req.user.email;
+    let requester = {
+      username:req.user.username,
+      email:req.user.email,
+      avatar:req.user.avatar
+    }
     let receiver = req.body.email;
     
-    console.log(requester);
-    console.log(receiver);
+    //console.log(requester);
+    //console.log(receiver);
 
     data.sendFreindRequest(requester,receiver)
     .then(data => {
@@ -238,7 +242,7 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
 
   function readAllFriendRequests(req,res){
     let username = req.user.username;
-    console.log(req.user);
+    
 
     data.readAllFriendRequest(username)
     .then(user =>{

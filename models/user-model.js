@@ -5,7 +5,7 @@ const encryption = require("../utils/encryption");
 const requestSchema = mongooseSchema({
     username:{type: String},
     email:{type: String},
-    avatar:{type: String, default: "default-avatar.jpg"}
+    avatar:{type: String}
 })
 
 const friendsSchema = mongooseSchema({
@@ -489,7 +489,17 @@ const userSchema = mongooseSchema({
     email: { type: String, required: true, unique: true },
     role: { type: String, enum: ["User", "Admin"], default: "User" },
     avatar: { type: String, default: defaultAvatar },
-    request:[requestSchema],
+    request:[{
+        username:{
+            type:String, required:true
+        },
+        email:{
+            type:String, required:true
+        },
+        avatar:{
+            type:String, required:true
+        }
+    }],
     friends:{type:[friendsSchema],default:[]},
     newRequest:{type:Number, default: 0}
     
