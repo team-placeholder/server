@@ -156,6 +156,7 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
       .catch((err) => {
 
         res.status(404);
+        console.log(err.message);
         return res.json(err.message);
 
       })

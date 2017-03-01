@@ -190,6 +190,7 @@ function removeRequest(username, requestUsername) {
             return reject(new Error("There is no such User"));
           }
 
+          console.log(user.email);
           return resolve(user);
         });
     });
@@ -296,7 +297,7 @@ function removeRequest(username, requestUsername) {
                friendsArray.push(fr);
 
             }
-            console.log(friendsArray);
+            //console.log(friendsArray);
             return resolve(friendsArray); 
           })
       })
