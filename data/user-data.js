@@ -303,6 +303,68 @@ function removeRequest(username, requestUsername) {
       })
   }
 
+function attachEventToUserAsCreator(username,event){
+    let eventObj = {
+        eventId:event._id,
+        name:event.name,
+        date:event.date,
+        slots:event.slots
+    }
+    return new Promise((resolve,reject) => {
+        User.findOneAndUpdate({'username':username},
+        {$push:{'eventsAsCreator':eventObj}},{upsert:true},{new:true},(err,user) => {
+            if(!user){
+                return reject(err);
+            }
+            return resolve(user);
+        });
+    });
+}
+
+function attachEventToUserAsParticipant(username,event){
+
+       let eventObj = {
+        eventId:event._id,
+        creator:event.creator,
+        name:event.name,
+        date:event.date,
+    }
+
+    return new Promise((resolve,reject) => {
+          User.findOneAndUpdate({'username':username},
+        {$push:{'eventsAsCreator':eventObj}},{upsert:true},{new:true},(err,user) => {
+            if(!user){
+                return reject(err);
+            }
+            return resolve(user);
+        });
+    });
+}
+
+function getUsersEventsAsCreator(username){
+    return new Promise((resolve,reject) => {
+        User.findOne({'username':username},(err,user) => {
+            if(!user){
+                return reject(err);
+            }
+
+            return resolve(user.eventsAsCreator);
+        })
+    })
+}
+
+function getUsersEventsAsParticipant(username){
+    return new Promise((resolve,reject) => {
+        User.findOne({'username':username},(err,user) => {
+            if(!user){
+                return reject(err);
+            }
+
+            return resolve(user.eventsAsParticipant);
+        })
+    })
+}
+
   return {
     getUserByName,
     getUserByEmail,
@@ -318,6 +380,10 @@ function removeRequest(username, requestUsername) {
     readAllFriendRequest,
     searchUsersByUsername,
     getRequests,
-    getFriends
+    getFriends,
+    attachEventToUserAsCreator,
+    attachEventToUserAsParticipant,
+    getUsersEventsAsCreator,
+    getUsersEventsAsParticipant
   };
 };

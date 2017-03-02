@@ -21,6 +21,14 @@ module.exports = function({ app, controllers }) {
         .get('/users/search/:username', controllers.user.searchUsersByUsername)
         .get("/profile/get-requests", controllers.user.getRequests)
         .get("/profile/friends",controllers.user.getFriends)
+        .get("/porfile/get-event-as-creator",controllers.user.getEventsAsCreator)
+        .get("/porfile/get-event-as-participant",controllers.user.getEventsAsParticipant)
+        .get("/events/:id",controllers.event.getEvent)
+        .put("/events/join",controllers.event.addParticipantToEvent)
+        .post('/events/create',controllers.event.createEvent)
+        
+
+      
 
 
 

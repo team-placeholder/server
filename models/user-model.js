@@ -501,7 +501,9 @@ const userSchema = mongooseSchema({
         }
     }],
     friends:{type:[friendsSchema],default:[]},
-    newRequest:{type:Number, default: 0}
+    newRequest:{type:Number, default: 0},
+    eventsAsCreator:[{}],
+    eventsAsParticipant:[{}]
     
 });
 

@@ -298,6 +298,31 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
       res.status(200).send(friends);
     })
   }
+  
+  function getEventsAsCreator(req,res){
+    let username = req.user.username;
+    data.getUsersEventsAsCreator(username)
+    .then(eventsAsCreator => {
+      if(!eventsAsCreator){
+        res.status(401).send();
+        return;
+      }
+      res.status(200).send(eventsAsCreator);
+    });
+  }
+
+  function getEventsAsParticipant(req,res){
+    let username = req.user.username;
+    data.getUsersEventsAsParticipant(username)
+    .then(eventsAsParticipant => {
+      if(!eventsAsParticipant){
+        res.status(401).send();
+        return;
+      }
+      res.status(200).send(eventsAsParticipant);
+    });
+  }
+    
   return {
     name: "user",
     registerUser,
@@ -313,6 +338,8 @@ module.exports = function ({data, passport, config, fs, path, imageDecoder}) {
     readAllFriendRequests,
     searchUsersByUsername,
     getRequests,
-    getFriends
+    getFriends,
+    getEventsAsCreator,
+    getEventsAsParticipant
   };
 };
