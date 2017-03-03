@@ -17,22 +17,16 @@ module.exports = function({ app, controllers }) {
         .post('/profile/add-friend', controllers.user.confirmFriendRequest)
         .put('/profile/deny-request', controllers.user.denyFriendRequest)
         .put('/profile/requests', controllers.user.readAllFriendRequests)
-        .post('/profile/events', controllers.events.getDailyEvents)
+        .post('/profile/events', controllers.event.getDailyEvents)
         .get('/users/search/:username', controllers.user.searchUsersByUsername)
         .get("/profile/get-requests", controllers.user.getRequests)
-        .get("/profile/friends",controllers.user.getFriends)
-        .get("/porfile/get-event-as-creator",controllers.user.getEventsAsCreator)
-        .get("/porfile/get-event-as-participant",controllers.user.getEventsAsParticipant)
-        .get("/events/:id",controllers.event.getEvent)
-        .put("/events/join",controllers.event.addParticipantToEvent)
-        .post('/events/create',controllers.event.createEvent)
-        
-
-      
-
+        .get("/profile/friends", controllers.user.getFriends)
+        .get("/porfile/get-event-as-creator", controllers.user.getEventsAsCreator)
+        .get("/porfile/get-event-as-participant", controllers.user.getEventsAsParticipant)
+        .get("/events/:id", controllers.event.getEvent)
+        .put("/events/join", controllers.event.addParticipantToEvent)
+        .post('/events/create', controllers.event.createEvent);
 
 
     app.use('/api', apiRouter);
-
-
 };

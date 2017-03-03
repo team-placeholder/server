@@ -6,8 +6,10 @@ const mongooseSchema = mongoose.Schema;
 const eventSchema = mongooseSchema({
     title: { type: String, required: true },
     creator: { type: String, required: true },
-    date: { type: Date, min: [Date.now, 'You cannot travel in the past'] },
-    slots: { type: Number, min: 1 },
+    start: {},
+    end: {},
+    date: {},
+    slots: { type: Number },
     participants: [String],
     description: { type: String }
 
