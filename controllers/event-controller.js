@@ -3,6 +3,9 @@ module.exports = function({ data }) {
 function createEvent(req, res) {
       const event = req.body;
 
+       if (Date.parse(event.date) <= Date.now()) {
+                return res.status(401).send({isSuccesful:"false"});
+            }
       data.createEvent(req.body)
       .then(event =>{
           if(!event){
