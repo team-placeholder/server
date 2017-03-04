@@ -25,7 +25,8 @@ module.exports = function({ app, controllers }) {
         .get("/porfile/get-event-as-participant", controllers.user.getEventsAsParticipant)
         .get("/events/:id", controllers.event.getEvent)
         .put("/events/join", controllers.event.addParticipantToEvent)
-        .post('/events/create', controllers.event.createEvent);
+        .post('/events/create', controllers.event.createEvent)
+        .get('/profile/get-user-info', controllers.user.getProfileData);
 
 
     app.use('/api', apiRouter);
