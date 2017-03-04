@@ -24,20 +24,20 @@ module.exports = function(models) {
 
     function getEventById(id, username) {
         return new Promise((resolve, reject) => {
-            EventM.findOne(id, (err, event) => {
+            EventM.findOne({ _id: id }, (err, event) => {
                 if (!event) {
                     return reject(err);
                 }
-                let eventObj = {
-                    title: event.title,
-                    creator: event.creator,
-                    date: event.date,
-                    slots: event.slot,
-                    participants: event.participants,
-                    description: event.description,
-                    isUserIn: event.isUserIn(username)
-                }
-                return resolve(eventObj);
+                // let eventObj = {
+                //     title: event.title,
+                //     creator: event.creator,
+                //     date: event.date,
+                //     slots: event.slot,
+                //     participants: event.participants,
+                //     description: event.description,
+                //     isUserIn: event.isUserIn(username)
+                // }
+                return resolve(event);
             });
         });
     }

@@ -76,7 +76,7 @@ module.exports = function({ data }) {
                     return;
                 }
 
-                res.status(200).send(event);
+                res.status(200).send({ message: `event for ${event.date.year}/${event.date.month}/${event.date.day}!`, event });
 
             });
     }
