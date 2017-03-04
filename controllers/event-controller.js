@@ -3,6 +3,7 @@ module.exports = function({ data }) {
     function createEvent(req, res) {
         const event = req.body;
         event.creator = req.user.username;
+        let eventId;
 
         // if (Date.parse(event.date) <= Date.now()) {
         //     return res.status(401).send({ isSuccesful: "false" });
@@ -13,10 +14,12 @@ module.exports = function({ data }) {
                     return res.status(401).send({ message: `Unable to create event!` });
                 }
 
+                eventId = event._id;
+
                 return data.getUserByEmail(req.user.email);
             }).then(user => {
                 let eventObj = {
-                    id: event._id,
+                    id: eventId,
                     start: event.start,
                     end: event.end,
                     title: event.title
