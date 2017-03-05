@@ -103,7 +103,7 @@ module.exports = function({ data }) {
             return 0;
         });
 
-        res.status(200).json({ message: `events for ${date.year}/${date.month}/${date.day}!`, events });
+        res.status(200).json({ message: `Events for ${date.year}/${date.month}/${date.day}!`, events });
     }
 
 
