@@ -52,20 +52,42 @@ module.exports = function({ data }) {
     }
 
     function addParticipantToEvent(req, res) {
-        data.addUserToSpecificEvent(req.user.username, req.body.eventId)
+        data.addUserToSpecificEvent(req.user.username, req.body.id)
             .then(event => {
                 if (!event) {
                     return res.status(401).send({ isSuccesful: "false" });
                 }
-                data.attachEventToUserAsParticipant(req.user.username, event)
-                    .then(user => {
-                        if (!user) {
-                            return res.status(401).send({ isSuccesful: "false" });
-                        }
+                let eventObj = {
+                    id: event._id,
+                    date:event.date,
+                    start: event.start,
+                    end: event.end,
+                    title: event.title
+                };
+                let user = req.user.username;
+                console.log(user.events);
+                if (!user.events[event.date.year]) {
+                    user.events[event.date.year] = {};
+                }
 
-                        return res.status(201).send({ isSuccesful: "true" });
-                    });
-            });
+                if (!user.events[event.date.year][event.date.month]) {
+                    user.events[event.date.year][event.date.month] = {};
+                }
+
+                if (!user.events[event.date.year][event.date.month][event.date.day]) {
+                    user.events[event.date.year][event.date.month][event.date.day] = [];
+                }
+
+                user.events[event.date.year][event.date.month][event.date.day].push(eventObj);
+                user.eventsAsParticipant.push(eventObj)
+
+                return data.updateUserFields(user.username, user);
+            }).then(user => {
+                 if (!user) {
+                    return res.status(401).send({ isSuccesful: "false" });
+                }
+                return res.status(201).send({ isSuccesful: "true" });
+            })
     }
 
     function getEvent(req, res) {
