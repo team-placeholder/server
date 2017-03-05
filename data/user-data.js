@@ -379,6 +379,8 @@ module.exports = function(models) {
         });
     }
 
+    
+
     return {
         getUserByName,
         getUserByEmail,

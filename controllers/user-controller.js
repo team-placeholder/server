@@ -346,6 +346,14 @@ module.exports = function({ data, passport, config, fs, path, imageDecoder }) {
 
     }
 
+    function getUsersEvents(req,res){
+        let username = req.params.username;
+        data.getUsersEventsAsCreator(username)
+        .then(eventsAsCreator => {
+           res.status(200).send({ message: username+`'s events !`, eventsAsCreator })
+        })
+    }
+
     return {
         name: "user",
         registerUser,
@@ -364,6 +372,7 @@ module.exports = function({ data, passport, config, fs, path, imageDecoder }) {
         getFriends,
         getEventsAsCreator,
         getEventsAsParticipant,
-        getProfileData
+        getProfileData,
+        getUsersEvents
     };
 };
