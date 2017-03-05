@@ -24,7 +24,7 @@ module.exports = function({ data }) {
                     end: event.end,
                     title: event.title
                 };
-
+                console.log(user.events);
                 if (!user.events[event.date.year]) {
                     user.events[event.date.year] = {};
                 }
@@ -38,13 +38,14 @@ module.exports = function({ data }) {
                 }
 
                 user.events[event.date.year][event.date.month][event.date.day].push(eventObj);
+                console.log(user.events)
 
                 return data.updateUserFields(user.username, user);
             }).then(user => {
                 if (!user) {
-                    return res.status(401).send({ message: `Unable to create event!` });
+                    return res.status(401).send({ isSuccesful: "false" });
                 }
-                return res.status(201).send({ message: `Unable to create event!` });
+                return res.status(201).send({ isSuccesful: "true" });
             });
     }
 

@@ -481,6 +481,9 @@ const defaultAvatar = "iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIA" +
     "BodHRwOi8vd3d3LmllYy5jaBx/AEwAAAA3dEVYdGljYzptb2RlbABJRU" +
     "MgNjE5NjYtMi4xIERlZmF1bHQgUkdCIGNvbG91ciBzcGFjZSAtIHNSR0JE" +
     "U0ipAAAAAElFTkSuQmCC";
+const eventSchema = new mongooseSchema({
+   events: { any:Object, default: {} }
+ }, { minimize: false });
 
 const userSchema = mongooseSchema({
     username: { type: String, required: true, unique: true },
@@ -507,8 +510,10 @@ const userSchema = mongooseSchema({
     newRequest: { type: Number, default: 0 },
     eventsAsCreator: [{}],
     eventsAsParticipant: [{}],
-    events: {}
+    events: {type:Object, default: {'pesho':"gosho"},minimize:false}
 });
+ 
+
 
 userSchema.methods = {
     authenticate(password) {
@@ -535,7 +540,9 @@ module.exports.seedAdminUser = () => {
                 request: [],
                 friends: [],
                 role: 'Admin',
-                events: {}
+            
+
+             
             });
         }
     });
