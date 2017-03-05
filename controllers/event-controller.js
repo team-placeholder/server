@@ -101,7 +101,19 @@ module.exports = function({ data }) {
                     return;
                 }
 
-                res.status(200).send({ message: `event for ${event.date.year}/${event.date.month}/${event.date.day}!`, event });
+                 let eventObj = {
+                     id:event._id,
+                     title: event.title,
+                     creator: event.creator,
+                     date: event.date,
+                     start:event.start,
+                     end:event.end,
+                     participants: event.participants,
+                     description: event.description,
+                     isUserIn: event.isUserIn(username)
+                 }
+
+                res.status(200).send({ message: `event for ${event.date.year}/${event.date.month}/${event.date.day}!`, eventObj });
 
             });
     }
