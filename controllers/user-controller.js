@@ -349,8 +349,12 @@ module.exports = function({ data, passport, config, fs, path, imageDecoder }) {
     function getUsersEvents(req,res){
         let username = req.params.username;
         data.getUsersEventsAsCreator(username)
-        .then(eventsAsCreator => {
-           res.status(200).send({ message: username+`'s events !`, eventsAsCreator })
+        .then(events => {
+            if(!events){
+                res.status(401).send();
+                return;
+            }
+           res.status(200).send({ message: username+`'s events !`, events })
         })
     }
 
