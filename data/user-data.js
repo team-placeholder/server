@@ -295,12 +295,19 @@ module.exports = function(models) {
         });
     }
 
-    // function attachEventToUserAsCreator(user, event) {
-
-
-
-    //     return updateUser(user);
-    // }
+   function attachEventToUserAsCreator(username,plannetEvent){
+     
+     console.log(plannetEvent);
+     return new Promise((resolve,reject) => {
+         User.findOneAndUpdate({'username':username},
+         {$push:{'eventsAsCreator':plannetEvent}},{upsert:true},{new:true},(err,user) => {
+             if(!user){
+                 return reject(err);
+             }
+             return resolve(user);
+         });
+     });
+ }
 
     function updateUserFields(username, updateData) {
         return new Promise((resolve, reject) => {
@@ -390,7 +397,7 @@ module.exports = function(models) {
         getFriends,
         updateUser,
         updateUserFields,
-        //attachEventToUserAsCreator,
+        attachEventToUserAsCreator,
         attachEventToUserAsParticipant,
         getUsersEventsAsCreator,
         getUsersEventsAsParticipant

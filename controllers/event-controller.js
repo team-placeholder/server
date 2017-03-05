@@ -20,6 +20,7 @@ module.exports = function({ data }) {
             }).then(user => {
                 let eventObj = {
                     id: eventId,
+                    date:event.date,
                     start: event.start,
                     end: event.end,
                     title: event.title
@@ -38,6 +39,7 @@ module.exports = function({ data }) {
                 }
 
                 user.events[event.date.year][event.date.month][event.date.day].push(eventObj);
+                user.eventsAsCreator.push(eventObj)
                 console.log(user.events)
 
                 return data.updateUserFields(user.username, user);
