@@ -94,29 +94,7 @@ module.exports = function({ data }) {
     function getEvent(req, res) {
         let username = req.user.username;
         let eventId = req.params.id;
-
         data.getEventById(eventId, username)
-<<<<<<< HEAD
-            .then(event1 => {
-                if (!event1) {
-                    res.status(401).send();
-                    return;
-                }
-             
-                 let event = {
-                     _id:event1._id,
-                     title: event1.title,
-                     creator: event1.creator,
-                     date: event1.date,
-                     start:event1.start,
-                     end:event1.end,
-                     participants: event1.participants,
-                     description: event1.description,
-                     isUserIn: event1.isUserIn(username)
-                 }
-
-                console.log(event);
-=======
             .then(ev => {
                 if (!ev) {
                     res.status(401).send();
@@ -135,7 +113,7 @@ module.exports = function({ data }) {
                     isUserIn: ev.isUserIn(username)
                 };
 
->>>>>>> 2875d171dfe18214f84addc151d18a713f70af6c
+
                 res.status(200).send({ message: `event for ${event.date.year}/${event.date.month}/${event.date.day}!`, event });
 
             });
