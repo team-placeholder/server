@@ -20,7 +20,7 @@ module.exports = function({ data }) {
             }).then(user => {
                 let eventObj = {
                     id: eventId,
-                    date:event.date,
+                    date: event.date,
                     start: event.start,
                     end: event.end,
                     title: event.title
@@ -60,7 +60,7 @@ module.exports = function({ data }) {
                 }
                 let eventObj = {
                     id: event._id,
-                    date:event.date,
+                    date: event.date,
                     start: event.start,
                     end: event.end,
                     title: event.title
@@ -84,7 +84,7 @@ module.exports = function({ data }) {
 
                 return data.updateUserFields(user.username, user);
             }).then(user => {
-                 if (!user) {
+                if (!user) {
                     return res.status(401).send({ isSuccesful: "false" });
                 }
                 return res.status(201).send({ isSuccesful: "true" });
@@ -96,6 +96,7 @@ module.exports = function({ data }) {
         let eventId = req.params.id;
 
         data.getEventById(eventId, username)
+<<<<<<< HEAD
             .then(event1 => {
                 if (!event1) {
                     res.status(401).send();
@@ -115,6 +116,26 @@ module.exports = function({ data }) {
                  }
 
                 console.log(event);
+=======
+            .then(ev => {
+                if (!ev) {
+                    res.status(401).send();
+                    return;
+                }
+
+                let event = {
+                    id: ev._id,
+                    title: ev.title,
+                    creator: ev.creator,
+                    date: ev.date,
+                    start: ev.start,
+                    end: ev.end,
+                    participants: ev.participants,
+                    description: ev.description,
+                    isUserIn: ev.isUserIn(username)
+                };
+
+>>>>>>> 2875d171dfe18214f84addc151d18a713f70af6c
                 res.status(200).send({ message: `event for ${event.date.year}/${event.date.month}/${event.date.day}!`, event });
 
             });
