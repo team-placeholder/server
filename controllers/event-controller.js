@@ -52,6 +52,7 @@ module.exports = function({ data }) {
     }
 
     function addParticipantToEvent(req, res) {
+        console.log(req.body);
         data.addUserToSpecificEvent(req.user.username, req.body.id)
             .then(event => {
                 if (!event) {
@@ -64,7 +65,7 @@ module.exports = function({ data }) {
                     end: event.end,
                     title: event.title
                 };
-                let user = req.user.username;
+                let user = req.user;
                 console.log(user.events);
                 if (!user.events[event.date.year]) {
                     user.events[event.date.year] = {};
@@ -95,25 +96,26 @@ module.exports = function({ data }) {
         let eventId = req.params.id;
 
         data.getEventById(eventId, username)
-            .then(event => {
-                if (!event) {
+            .then(event1 => {
+                if (!event1) {
                     res.status(401).send();
                     return;
                 }
-
-                 let eventObj = {
-                     id:event._id,
-                     title: event.title,
-                     creator: event.creator,
-                     date: event.date,
-                     start:event.start,
-                     end:event.end,
-                     participants: event.participants,
-                     description: event.description,
-                     isUserIn: event.isUserIn(username)
+             
+                 let event = {
+                     _id:event1._id,
+                     title: event1.title,
+                     creator: event1.creator,
+                     date: event1.date,
+                     start:event1.start,
+                     end:event1.end,
+                     participants: event1.participants,
+                     description: event1.description,
+                     isUserIn: event1.isUserIn(username)
                  }
 
-                res.status(200).send({ message: `event for ${event.date.year}/${event.date.month}/${event.date.day}!`, eventObj });
+                console.log(event);
+                res.status(200).send({ message: `event for ${event.date.year}/${event.date.month}/${event.date.day}!`, event });
 
             });
     }

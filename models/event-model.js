@@ -22,7 +22,7 @@ eventSchema.method({
         }
         let isIn = false;
         for (let par of this.participants) {
-            if (par.username == username) {
+            if (par == username) {
                 isIn = true;
                 break;
             }

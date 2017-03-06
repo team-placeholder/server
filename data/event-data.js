@@ -44,9 +44,9 @@ module.exports = function(models) {
 
     function addUserToSpecificEvent(username, eventId) {
         return new Promise((resolve, reject) => {
-            EventM.findOneAndUpdate({ '_id': eventId }, { $addToSet: { 'participants': username }, $inc: { 'slots': -1 } }, { new: true }, (err, event) => {
+            EventM.findOneAndUpdate({ '_id': eventId }, { $addToSet: { 'participants': username } }, { new: true }, (err, event) => {
                 if (!event) {
-                    return reject(err.message);
+                    return reject(err);
                 }
 
                 return resolve(event);
