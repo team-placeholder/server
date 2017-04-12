@@ -482,8 +482,8 @@ const defaultAvatar = "iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIA" +
     "MgNjE5NjYtMi4xIERlZmF1bHQgUkdCIGNvbG91ciBzcGFjZSAtIHNSR0JE" +
     "U0ipAAAAAElFTkSuQmCC";
 const eventSchema = new mongooseSchema({
-   events: { any:Object, default: {} }
- }, { minimize: false });
+    events: { any: Object, default: {} }
+}, { minimize: false });
 
 const userSchema = mongooseSchema({
     username: { type: String, required: true, unique: true },
@@ -510,9 +510,9 @@ const userSchema = mongooseSchema({
     newRequest: { type: Number, default: 0 },
     eventsAsCreator: [{}],
     eventsAsParticipant: [{}],
-    events: {type:Object, default: {'pesho':"gosho"},minimize:false}
+    events: { type: Object, default: { 'pesho': "gosho" }, minimize: false }
 });
- 
+
 
 
 userSchema.methods = {
@@ -530,7 +530,7 @@ module.exports.seedAdminUser = () => {
     User.find({}).then(users => {
         if (users.length === 0) {
             let salt = encryption.generateSalt();
-            let hashedPass = encryption.generateHashedPassword(salt, 'admin');
+            let hashedPass = encryption.generateHashedPassword(salt, '1234q');
 
             User.create({
                 username: 'admin',
@@ -540,9 +540,9 @@ module.exports.seedAdminUser = () => {
                 request: [],
                 friends: [],
                 role: 'Admin',
-            
 
-             
+
+
             });
         }
     });
